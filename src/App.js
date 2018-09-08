@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
 
 
-
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import '@fortawesome/fontawesome-free/css/fontawesome.min.css'
 import './App.css';
+import Provider from './context';
 
 import Contacts from './containers/Contacts/Contacts';
-import Header from './components/Header/Header';
+import Header from './components/layouts/Header/Header';
+import AddContact from './components/Contact/AddContact';
 
 
 class App extends Component {
   render() {
     return (
-      <div >
-        <Header branding='Contact Manager' />
-        <div className="container">
-          <Contacts/>
+      <Provider>
+        <div >
+          <Header branding='Contact Manager' />
+          <div className="container">
+            <AddContact />
+            <Contacts/>
+          </div>
         </div>
-      </div>
+      </Provider>
      
     );
     // return React.createElement('div', null, 
