@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-
+import axios from 'axios';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 
 import {Consumer} from '../../context';
 
@@ -13,11 +14,18 @@ class Contact extends Component {
   onShowClick = () => {
     this.setState({showContactInfo: !this.state.showContactInfo});
   }
-  onDeleteClick = (id, dispatch) => {
-    dispatch({type: 'DELETE_CONTACT', payload: id})
+  onDeleteClick = async (id, dispatch) => {
+    try {
+      await axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`);
+      dispatch({type: 'DELETE_CONTACT', payload: id})
+    } catch (error) {
+      dispatch({type: 'DELETE_CONTACT', payload: id})
+    }
+    
   }
-  onEditClick = () => {
-
+  onEditClick = (id) => {
+    // this.props.history.push('/');
+    // this.props.history.push(`/contact/edit/${id}`);
   }
 
   render() {
@@ -33,7 +41,9 @@ class Contact extends Component {
               <h4> {contact.name} 
                 <i onClick={() => this.onShowClick() } className='fas fa-sort-down text-sucess pointer'></i>
                 <span className='float-right'>
-                  <i onClick={() => this.onEditClick() } className='fas fa-plus text-primary pointer mx-2 '></i>
+                <Link to={`contact/edit/${contact.id}`}>
+                  <i  className='fas fa-pencil-alt text-primary pointer mx-2 '> </i>
+                </Link>
                   <i onClick={() => this.onDeleteClick(contact.id, dispatch) } className='fas fa-times text-danger pointer '></i>
                 </span>
               </h4>

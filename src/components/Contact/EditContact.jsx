@@ -3,7 +3,7 @@ import {Consumer} from '../../context';
 import TextInput from '../CustomInput/TextInput';
 import axios from 'axios';
 
-class AddContact extends Component {
+class EditContact extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -14,7 +14,18 @@ class AddContact extends Component {
         }
 
     }
-     onAddContact = async (dispatch, e) => {
+    async componentDidMount() {
+        const {id} = this.props.match.params;
+        const res = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}`);
+        const contact = res.data;
+        this.setState(
+            {
+                name: contact.name,
+                email: contact.email,
+                phone: contact.phone,
+            });
+    }
+     onUpdateContact = async (dispatch, e) => {
         e.preventDefault();
         const {name, email, phone} = this.state;
 
@@ -39,7 +50,7 @@ class AddContact extends Component {
             errors: {}
         };
         const res = await axios.post('https://jsonplaceholder.typicode.com/users', newContact);
-        dispatch({type: 'ADD_CONTACT', payload: res.data || null})
+        dispatch({type: 'Update_CONTACT', payload: res.data || null})
         
 
         // Clear Input
@@ -70,9 +81,9 @@ class AddContact extends Component {
                     const {dispatch} = value;
                     return (
                         <div className='card mb-3'>
-                            <div className="card-header">Add Contact</div>
+                            <div className="card-header">Edit Contact</div>
                             <div className="card-body">
-                                <form onSubmit={(e) => this.onAddContact(dispatch, e)}>
+                                <form onSubmit={(e) => this.onUpdateContact(dispatch, e)}>
                                     <TextInput 
                                         label="Name"
                                         name="name"
@@ -99,7 +110,7 @@ class AddContact extends Component {
                                         onChangeInput={(e) => this.onInputChange(e)}
                                         error={errors.phone}
                                     />
-                                    <input type="submit" className="btn btn-light btn-block"/>
+                                    <input value="Update Contact" type="submit" className="btn btn-light btn-block"/>
                                 </form>
                             </div>
                         </div>
@@ -111,4 +122,4 @@ class AddContact extends Component {
 }
 
 
-export default AddContact
+export default EditContact

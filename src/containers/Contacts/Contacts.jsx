@@ -20,6 +20,8 @@ class Contacts extends Component {
                     const {contacts} = value;
                     return (
                         <React.Fragment >
+                            <h1 className="display-3">
+                            <span className="text-danger">Contact</span> List</h1>
                             {contacts.map((contact, index) => (
                                 <Contact  
                                 key={contact.id} 
